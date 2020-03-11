@@ -7,6 +7,8 @@ import Game from './Game';
 import { GameContext } from './GameContext';
 import useInterval from '../hooks/use-interval.hook';
 
+console.log(GameContext)
+
 function App(props) {
   const { cookiesPerSecond, numCookies, setNumCookies} = React.useContext(GameContext);
   useInterval(() => {
