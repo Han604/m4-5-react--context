@@ -1,4 +1,5 @@
 import React from 'react';
+import usePersistedState from '../hooks/use-persisted-state.hook'
 export const GameContext = React.createContext(null);
 
 const items = [
@@ -8,16 +9,18 @@ const items = [
 ];
 
 export const GameProvider = ({ children }) => {
-    const [numCookies, setNumCookies] = React.usePersistedState(1000, 'num-Cookies');
-    const [purchasedItems, setPurchasedItems] = React.usePersistedState({
+    const [numCookies, setNumCookies] = usePersistedState('num-Cookies', 1000 );
+    const [purchasedItems, setPurchasedItems] = usePersistedState('purchased-items',{
         cursor: 0,
         grandma: 0,
         farm: 0
-    }, 'purchased-items');
-
+    });
     const calculateCookiesPerSecond = purchasedItems => {
         return Object.keys(purchasedItems).reduce((acc, itemId) => {
             const numOwned = purchasedItems[itemId];
+            console.log(purchasedItems, 'purItem')
+            console.log(numOwned, 'numOwned')
+            console.log(items)
             const item = items.find(item => item.id === itemId);
             const value = item.value;
     
