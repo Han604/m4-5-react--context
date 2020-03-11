@@ -22,30 +22,30 @@ const App = () => {
 
   return (
     <>
-      <Home />
+      <Home user={user}/>
       <Sidebar user={user} />
     </>
   );
 };
 
-const Home = () => {
+const Home = ({user}) => {
   return (
     <>
-      <Header />
+      <Header user={user}/>
       <MainContent />
     </>
   );
 };
 
-const Header = () => {
+const Header = ({user}) => {
   return (
     <header>
-      <Navigation />
+      <Navigation user={user}/>
     </header>
   );
 };
 
-const Navigation = () => {
+const Navigation = ({user}) => {
   return (
     <nav>
       <ul>
@@ -149,30 +149,35 @@ Update the following components to use context
 ---
 
 ```jsx
+export const userContext = React.createContext(null)
 const App = () => {
   const [user, setUser] = React.useState({ username: 'Alfalfa' });
 
-  return <Home user={user} setUser={setUser} />;
+  return 
+    <UserContext.Provider value={{user, setUser}}>
+    <Home user={user} setUser={setUser} />;
+    <UserContext.Provider>
 };
 
-const Home = ({ user, setUser }) => {
+const Home = () => {
   return (
     <>
-      <Header user={user} setUser={setUser} />
+      <Header/>
       <MainContent />
     </>
   );
 };
 
-const Header = ({ user, setUser }) => {
+const Header = () => {
   return (
     <header>
-      <Navigation user={user} setUser={setUser} />
+      <Navigation/>
     </header>
   );
 };
 
-const Navigation = ({ user, setUser }) => {
+const Navigation = () => {
+  const { user, setUser } = useContext(userContext);
   return (
     <nav>
       <ul>
@@ -196,18 +201,21 @@ const Navigation = ({ user, setUser }) => {
 ---
 
 ```jsx
+export const dialogContext = React.createContext(null)
 const App = () => {
   const [dialog, setDialog] = React.useState(null);
 
   return (
     <>
-      <MainContent dialog={dialog} setDialog={setDialog} />
-      <Dialog currentDialog={dialog} />
+      <DialogContext.Provider value={{dialog, setDialog}}>
+      <MainContent/>
+      <Dialog currentDialog />
     </>
   );
 };
 
-const MainContent = ({ dialog, setDialog }) => {
+const MainContent = () => {
+  {setDialog} = React.useContext(dialogContext)
   return (
     <>
       <Sidebar>
@@ -221,6 +229,7 @@ const MainContent = ({ dialog, setDialog }) => {
 };
 
 const Dialog = ({ currentDialog }) => {
+  currentDialog = React.useContext(dialogContext).dialog;
   if (!currentDialog) {
     return null;
   }

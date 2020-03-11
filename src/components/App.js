@@ -4,8 +4,14 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Home from './Home';
 import Game from './Game';
+import { GameContext } from './GameContext';
+import useInterval from '../hooks/use-interval.hook';
 
 function App(props) {
+  const { cookiesPerSecond, numCookies, setNumCookies} = React.useContext(GameContext);
+  useInterval(() => {
+    setNumCookies(numCookies + cookiesPerSecond);
+    }, 1000);  
   return (
     <>
       <GlobalStyles />
